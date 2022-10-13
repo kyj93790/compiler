@@ -80,7 +80,7 @@ TokenType getToken(void)
   if (currentToken == COMMENT) TraceScan = FALSE;
   strncpy(tokenString,yytext,MAXTOKENLEN);
   if (TraceScan) {
-    fprintf(listing,"\t%d\t",lineno);
+    fprintf(listing,"\t%d",lineno);
     printToken(currentToken,tokenString);
   }
   TraceScan = TRUE;

@@ -24,7 +24,7 @@ void printToken( TokenType token, const char* tokenString )
     case MINUS: fprintf(listing, "\t\t\t-\t\t\t%s\n", tokenString); break;
     case TIMES: fprintf(listing, "\t\t\t*\t\t\t%s\n", tokenString); break;
     case OVER: fprintf(listing, "\t\t\t/\t\t\t%s\n", tokenString); break;
-    case LT: fprintf(listing,"\t\t\t\n<\t\t\t%s\n", tokenString); break;
+    case LT: fprintf(listing,"\t\t\t<\t\t\t%s\n", tokenString); break;
     case LE: fprintf(listing, "\t\t\t<=\t\t\t%s\n", tokenString); break;
     case GT: fprintf(listing, "\t\t\t>\t\t\t%s\n", tokenString); break;
     case GE: fprintf(listing, "\t\t\t>=\t\t\t%s\n", tokenString); break;
@@ -39,21 +39,21 @@ void printToken( TokenType token, const char* tokenString )
     case RCURLY: fprintf(listing, "\t\t\t}\t\t\t%s\n", tokenString); break;
     case LSQUARE: fprintf(listing, "\t\t\t[\t\t\t%s\n", tokenString); break;
     case RSQUARE: fprintf(listing, "\t\t\t]\t\t\t%s\n", tokenString); break;
-    case ENDFILE: fprintf(listing,"EOF\n"); break;
+    case ENDFILE: fprintf(listing,"\t\t\tEOF\n"); break;
     case NUM:
       fprintf(listing,
-          "NUM, val= %s\n",tokenString);
+          "\t\t\tNUM\t\t\t%s\n",tokenString);
       break;
     case ID:
       fprintf(listing,
-          "ID, name= %s\n",tokenString);
+          "\t\t\tID\t\t\t%s\n",tokenString);
       break;
     case ERROR:
       fprintf(listing,
-          "ERROR: %s\n",tokenString);
+          "\t\t\tERROR\t\t\t%s\n",tokenString);
       break;
     default: /* should never happen */
-      fprintf(listing,"Unknown token: %d\n",token);
+      fprintf(listing,"\t\t\tUnknown token: %d\n",token);
   }
 }
 
