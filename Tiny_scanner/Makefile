@@ -12,4 +12,6 @@ $(TARGET) :
 
 clean :
 	rm -f *.o
+	rm -f lex.yy.c
+	rm -f *_20191574.txt
 	rm -f $(TARGET)
