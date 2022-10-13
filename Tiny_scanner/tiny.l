@@ -57,7 +57,7 @@ whitespace  [ \t]+
                     if (c == EOF) break;
                     if (c == '*') {
                       c = input();
-                      if (c == '/') break;
+                      if (c == '/') return COMMENT;
                       else if (c == EOF) break;
                       else if (c == '\n') lineno++;
                     }
@@ -77,11 +77,13 @@ TokenType getToken(void)
     yyout = listing;
   }
   currentToken = yylex();
+  if (currentToken == COMMENT) TraceScan = FALSE;
   strncpy(tokenString,yytext,MAXTOKENLEN);
   if (TraceScan) {
-    fprintf(listing,"\t%d: ",lineno);
+    fprintf(listing,"\t%d\t",lineno);
     printToken(currentToken,tokenString);
   }
+  TraceScan = TRUE;
   return currentToken;
 }
 
