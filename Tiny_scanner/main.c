@@ -8,7 +8,7 @@
 #include "globals.h"
 
 /* set NO_PARSE to TRUE to get a scanner-only compiler */
-#define NO_PARSE FALSE
+#define NO_PARSE TRUE
 /* set NO_ANALYZE to TRUE to get a parser-only compiler */
 #define NO_ANALYZE FALSE
 
@@ -48,19 +48,38 @@ int Error = FALSE;
 main( int argc, char * argv[] )
 { TreeNode * syntaxTree;
   char pgm[120]; /* source code file name */
+  char outfile[120]; /* output file name */
+  char *ptr;
+
+  // argument number error check
   if (argc != 2)
     { fprintf(stderr,"usage: %s <filename>\n",argv[0]);
       exit(1);
     }
+  
+  // source file open
   strcpy(pgm,argv[1]) ;
   if (strchr (pgm, '.') == NULL)
-     strcat(pgm,".tny");
+     strcat(pgm,".cm");
   source = fopen(pgm,"r");
   if (source==NULL)
   { fprintf(stderr,"File %s not found\n",pgm);
     exit(1);
   }
-  listing = stdout; /* send listing to screen */
+
+  // listing(output) file open
+  strcpy(outfile, argv[1]);
+  ptr = strchr(outfile, '.');
+  if (ptr == NULL)
+    strcat(outfile,"_20191574.txt");
+  else
+    strcpy(ptr, "_20191574.txt");
+  listing = fopen(outfile, "w");
+  if (listing == NULL) {
+    fprintf(stderr, "File %s can't be opened\n", outfile);
+    exit(1);
+  }
+
   fprintf(listing,"\nTINY COMPILATION: %s\n",pgm);
 #if NO_PARSE
   while (getToken()!=ENDFILE);
@@ -97,6 +116,7 @@ main( int argc, char * argv[] )
 #endif
 #endif
   fclose(source);
+  fclose(listing);
   return 0;
 }
 
