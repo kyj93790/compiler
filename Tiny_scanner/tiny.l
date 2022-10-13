@@ -23,32 +23,44 @@ whitespace  [ \t]+
 %%
 
 "if"            {return IF;}
-"then"          {return THEN;}
 "else"          {return ELSE;}
-"end"           {return END;}
-"repeat"        {return REPEAT;}
-"until"         {return UNTIL;}
-"read"          {return READ;}
-"write"         {return WRITE;}
-":="            {return ASSIGN;}
-"="             {return EQ;}
-"<"             {return LT;}
+"int"           {return INT;}
+"return"        {return RETURN;}
+"void"          {return VOID;}
+"while"         {return WHILE;}
 "+"             {return PLUS;}
 "-"             {return MINUS;}
 "*"             {return TIMES;}
 "/"             {return OVER;}
+"<"             {return LT;}
+"<="            {return LE;}
+">"             {return GT;}
+">="            {return GE;}
+"=="            {return EQ;}
+"!="            {return NEQ;}
+"="             {return ASSIGN;}
+";"             {return SEMI;}
+","             {return COMMA;}
 "("             {return LPAREN;}
 ")"             {return RPAREN;}
-";"             {return SEMI;}
+"{"             {return LCURLY;}
+"}"             {return RCURLY;}
+"["             {return LSQUARE;}
+"]"             {return RSQUARE;}
 {number}        {return NUM;}
 {identifier}    {return ID;}
 {newline}       {lineno++;}
 {whitespace}    {/* skip whitespace */}
-"{"             { char c;
+"/*"             { char c;
                   do
                   { c = input();
                     if (c == EOF) break;
-                    if (c == '\n') lineno++;
+                    if (c == '*') {
+                      c = input();
+                      if (c == '/') break;
+                      else if (c == EOF) break;
+                      else if (c == '\n') lineno++;
+                    }
                   } while (c != '}');
                 }
 .               {return ERROR;}
