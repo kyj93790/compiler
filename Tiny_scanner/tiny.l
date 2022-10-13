@@ -58,9 +58,10 @@ whitespace  [ \t]+
                     if (c == '*') {
                       c = input();
                       if (c == '/') return COMMENT;
-                      else if (c == EOF) break;
+                      else if (c == EOF) return COMMENT_ERROR;
                       else if (c == '\n') lineno++;
                     }
+                    if (c == '\n') lineno++;
                   } while (c != '}');
                 }
 .               {return ERROR;}
@@ -69,6 +70,7 @@ whitespace  [ \t]+
 
 TokenType getToken(void)
 { static int firstTime = TRUE;
+  static int TraceScan = TRUE;
   TokenType currentToken;
   if (firstTime)
   { firstTime = FALSE;

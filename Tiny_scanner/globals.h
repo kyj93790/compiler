@@ -27,13 +27,13 @@
 
 typedef enum 
     /* book-keeping tokens */
-   {ENDFILE,ERROR,
+   {ENDFILE,ERROR,COMMENT,COMMENT_ERROR,
     /* reserved words */
     IF,ELSE,INT,RETURN,VOID,WHILE,
     /* multicharacter tokens */
     ID,NUM,
     /* special symbols */
-    PLUS,MINUS,TIMES,OVER,LT,LE,GT,GE,EQ,NEQ,ASSIGN,SEMI,COMMA,LPAREN,RPAREN,LCURLY,RCURLY,LSQUARE,RSQUARE, COMMENT
+    PLUS,MINUS,TIMES,OVER,LT,LE,GT,GE,EQ,NEQ,ASSIGN,SEMI,COMMA,LPAREN,RPAREN,LCURLY,RCURLY,LSQUARE,RSQUARE
    } TokenType;
 
 extern FILE* source; /* source code text file */
