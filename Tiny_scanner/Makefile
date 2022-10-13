@@ -1,6 +1,5 @@
 CC = gcc
-TARGET = 20191574
-
+TARGET = hw1_20191574
 
 all : $(TARGET)
 
@@ -9,6 +8,8 @@ $(TARGET) :
 	$(CC) -c util.c
 	lex tiny.l
 	$(CC) -c lex.yy.c
-	$(CC) -g -o 20191574 main.o util.o lex.yy.o -ll
+	$(CC) -g -o $@ main.o util.o lex.yy.o -ll
 
-
+clean :
+	rm -f *.o
+	rm -f $(TARGET)
