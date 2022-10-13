@@ -60,7 +60,7 @@ main( int argc, char * argv[] )
   // source file open
   strcpy(pgm,argv[1]) ;
   if (strchr (pgm, '.') == NULL)
-     strcat(pgm,".cm");
+     strcat(pgm,".c");
   source = fopen(pgm,"r");
   if (source==NULL)
   { fprintf(stderr,"File %s not found\n",pgm);
@@ -69,7 +69,7 @@ main( int argc, char * argv[] )
 
   // listing(output) file open
   strcpy(outfile, argv[1]);
-  ptr = strchr(outfile, '.');
+  ptr = strrchr(outfile, '.');
   if (ptr == NULL)
     strcat(outfile,"_20191574.txt");
   else
