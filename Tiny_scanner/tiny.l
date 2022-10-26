@@ -62,7 +62,7 @@ whitespace  [ \t]+
                       else if (c == '\n') lineno++;
                     }
                     if (c == '\n') lineno++;
-                  } while (c != '}');
+                  } while (1);
                 }
 .               {return ERROR;}
 

@@ -1,5 +1,5 @@
 CC = gcc
-TARGET = hw1_20191574
+TARGET = hw1_binary
 
 all : $(TARGET)
 
