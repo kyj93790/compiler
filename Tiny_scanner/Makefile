@@ -1,14 +1,16 @@
 CC = gcc
-TARGET = hw1_binary
+TARGET = hw2_binary
 
 all : $(TARGET)
 
 $(TARGET) :
-	$(CC) -c main.c
-	$(CC) -c util.c
+	bison -d yacc/tiny.y --yacc
 	lex tiny.l
 	$(CC) -c lex.yy.c
-	$(CC) -g -o $@ main.o util.o lex.yy.o -ll
+	$(CC) -c y.tab.c
+	$(CC) -c main.c
+	$(CC) -c util.c
+	$(CC) -g -o $@ y.tab.o main.o util.o lex.yy.o -ll
 
 clean :
 	rm -f *.o
