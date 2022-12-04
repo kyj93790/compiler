@@ -70,7 +70,7 @@ whitespace  [ \t]+
 
 TokenType getToken(void)
 { static int firstTime = TRUE;
-  static int TraceScan = TRUE;
+  static int TraceScan = FALSE;
   TokenType currentToken;
   if (firstTime)
   { firstTime = FALSE;
@@ -85,7 +85,7 @@ TokenType getToken(void)
     fprintf(listing,"\t%d",lineno);
     printToken(currentToken,tokenString);
   }
-  TraceScan = TRUE;
+  TraceScan = FALSE;
   return currentToken;
 }
 
