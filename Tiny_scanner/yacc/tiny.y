@@ -233,6 +233,122 @@ ret_stmt      : RETURN SEMI
                       }
               ;
 
+exp           : var ASSIGN exp
+                      {
+                        $$ = newExpNode(AssignK);
+                        $$->child[0] = $1;
+                        $$->child[1] = $2;
+                      }
+              | simp_exp
+                      { $$ = $1; }
+              ;
+
+var           : term_ID
+                      {
+                        $$ = newExpNode(ExpVarK);
+                        $$->attr.name = savedName;
+                      }
+              | term_ID LSQUARE exp RSQUARE
+                      {
+                        $$ = newExpNode(ExpArrK);
+                        $$->attr.name = savedName;
+                        $$->child[0] = $4;
+                      }
+              ;
+
+simp_exp      : add_exp relop add_exp
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = $2;
+                        $$->child[0] = $1;
+                        $$->child[1] = $3;
+                      }
+              | add_exp
+                      { $$ = $1; }
+              ;
+
+relop         : LE  { $$ = $1; }
+              | LT  { $$ = $1; }
+              | GT  { $$ = $1; }
+              | GE  { $$ = $1; }
+              | EQ  { $$ = $1; }
+              | NEQ { $$ = $1; }
+              ;
+
+add_exp       : add_exp addop term
+                        {
+                          $$ = newExpNode(OpK);
+                          $$->attr.op = $2;
+                          $$->child[0] = $1;
+                          $$->child[1] = $3;
+                        }
+              | term
+                        { $$ = $1; }
+              ;
+
+addop         : PLUS  { $$ = $1; }
+              | MINUS { $$ = $1; }
+              ;
+
+term          : term mulop factor
+                        {
+                          $$ = newExpNode(OpK);
+                          $$->attr.op = $2;
+                          $$->child[0] = $1;
+                          $$->child[1] = $3;
+                        }
+              | factor
+                        { $$ = $1; }
+              ;
+
+mulop         : TIMES { $$ = $1; }
+              | OVER  { $$ = $1; }
+              ;
+
+factor        : LPAREN exp RPAREN
+                      { $$ = $2; }
+              | var
+                      { $$ = $1; }
+              | call
+                      { $$ = $1; }
+              | term_NUM
+                      {
+                        $$ = newExpNode(NumK);
+                        $$->attr.val = savedNum;
+                      }
+              ;
+
+call          : term_ID LPAREN args RPAREN
+                      {
+                        $$ = newExpNode(CallK);
+                        $$->attr.name = savedName;
+                        $$->child[0] = $3;
+                      }
+              ;
+
+args          : arg_lst
+                      { $$ = $1; }
+              | { $$ = NULL; }
+              ;
+
+arg_lst       : arg_lst COMMA exp
+                      {
+                        YYSTYPE t = $1;
+                        if (t != NULL) {
+                          while (t->sibling) {
+                            t = t->sibling;
+                          }
+                          t->sibling = $3;
+                          $$ = $1;
+                        }
+                        else {
+                          $$ = $3;
+                        }
+                      }
+              | exp
+                      { $$ = $1; }
+              ;
+
 %%
 
 int yyerror(char * message)
