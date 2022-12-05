@@ -227,7 +227,7 @@ void printTree( TreeNode * tree )
           fprintf(listing,"Variable : %s\n", tree->attr.name);
           break;
         case ExpArrK:
-          fprintf(listing,"Array Variable (Name, size): (%s, %d)\n", tree->attr.arr.id, tree->attr.arr.size);
+          fprintf(listing,"Array Variable (Name, index): (%s, %d)\n", tree->attr.arr.id, tree->attr.arr.size);
           break;
         case CallK:
           fprintf(listing, "Call\n");
@@ -245,7 +245,7 @@ void printTree( TreeNode * tree )
           fprintf(listing, "Variable Declare : %s\n", tree->attr.name);
           break;
         case ArrayK:
-          fprintf(listing, "Array Variable Declare : %s\n", tree->attr.name);
+          fprintf(listing, "Array Variable Declare (Name, size): (%s, %d)\n", tree->attr.name, tree->attr.arr.size);
           break;
         case FuncK:
           fprintf(listing, "Function Declare : %s\n", tree->attr.name);
