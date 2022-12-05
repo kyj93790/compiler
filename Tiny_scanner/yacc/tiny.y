@@ -245,7 +245,7 @@ exp           : var ASSIGN exp
                       {
                         $$ = newExpNode(AssignK);
                         $$->child[0] = $1;
-                        $$->child[1] = $2;
+                        $$->child[1] = $3;
                       }
               | simp_exp
                       { $$ = $1; }
