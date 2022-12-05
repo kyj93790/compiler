@@ -92,6 +92,22 @@ type_spcf   : INT
                   { savedType = Void; }
             ;
 
+func_decl   : type_spcf term_ID
+                  {
+                    $$ = newDeclNoode(FuncK);
+                    $$->lineno = lineno;
+                    $$->type = savedType;
+                    $$->attr.name = savedName;
+                  }
+              LPAREN params RPAREN comp_stmt
+                  {
+                    $$ = $3;
+                    $$->child[0] = $5; // params
+                    $$->child[1] = $7; // comp_stmt
+                  }
+            ;
+
+
 
 %%
 
