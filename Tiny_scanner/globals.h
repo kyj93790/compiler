@@ -74,6 +74,9 @@ typedef enum {OpK,ConstK,IdK} ExpKind;
 // Attribute for DeclK
 typedef enum {VarK, ArrayK, FuncK} DeclKind;
 
+/* ExpType is used for type checking */
+typedef enum {Void, Integer, Boolean} ExpType;
+
 #define MAXCHILDREN 3
 
 typedef struct Array
