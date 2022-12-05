@@ -164,8 +164,8 @@ char * copyString(char * s)
 static indentno = 0;
 
 /* macros to increase/decrease indentation */
-#define INDENT indentno+=2
-#define UNINDENT indentno-=2
+#define INDENT indentno+=4
+#define UNINDENT indentno-=4
 
 /* printSpaces indents by printing spaces */
 static void printSpaces(void)
