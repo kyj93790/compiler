@@ -260,7 +260,7 @@ var           : term_ID
                       {
                         $$ = newExpNode(ExpArrK);
                         $$->attr.name = savedName;
-                        $$->child[0] = $4;
+                        $$->child[0] = $3;
                       }
               ;
 
