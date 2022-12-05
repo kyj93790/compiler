@@ -143,6 +143,61 @@ param       : type_spcf term_ID
                     $$->attr.name = savedName;
                   }
 
+comp_stmt    : LCURLY local_decl stmt_lst RCURLY
+                  {
+                    $$ = newStmtNode(CompK);
+                    $$->child[0] = $2;
+                    $$->child[1] = $3;
+                  }
+              ;
+
+local_decl    : local_decl var_decl
+                  {
+                    YYSTYPE t = $1;
+                    if (t != NULL) {
+                      while (t->sibling) {
+                        t = t->sibling;
+                      }
+                      t->sibling = $2;
+                      $$ = $1;
+                    }
+                    else {
+                      $$ = $2;
+                    }
+                  }
+              | { $$ = NULL; }
+              ;
+
+
+stmt_lst      : stmt_lst stmt
+                    {
+                      YYSTYPE t = $1;
+                      if (t != NULL) {
+                        while (t->sibling) {
+                          t = t->sibling;
+                        }
+                        t->sibling = $2;
+                        $$ = $1;
+                      }
+                      else {
+                        $$ = $2;
+                      }
+                    }
+              | { $$ = NULL; }
+              ;
+
+stmt          : exp_stmt
+                      { $$ = $1; }
+              | comp_stmt
+                      { $$ = $1; }
+              | sel_stmt
+                      { $$ = $1; }
+              | iter_stmt
+                      { $$ = $1; }
+              | ret_stmt
+                      { $$ = $1; }
+              ;
+
 %%
 
 int yyerror(char * message)
