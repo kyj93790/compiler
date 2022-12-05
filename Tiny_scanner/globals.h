@@ -69,7 +69,7 @@ typedef enum {StmtK, ExpK, DeclK, ParamK} NodeKind;
 typedef enum {IfK, CompK, IterK, RetK} StmtKind;
 
 // Attribute for ExpK
-typedef enum {AssignK, OpK, NumK, ExpVarK, ExpArrK} ExpKind;
+typedef enum {AssignK, OpK, NumK, ExpVarK, ExpArrK, CallK} ExpKind;
 
 // Attribute for DeclK
 typedef enum {VarK, ArrayK, FuncK} DeclKind;
