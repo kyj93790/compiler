@@ -137,7 +137,7 @@ TreeNode * newTypeNode(TypeKind kind)
     for (i=0;i<MAXCHILDREN;i++) t->child[i] = NULL;
     t->sibling = NULL;
     t->nodekind = TypeK;
-    t->kind.param = kind;
+    t->kind.type = kind;
     t->lineno = lineno;
   }
   return t;
