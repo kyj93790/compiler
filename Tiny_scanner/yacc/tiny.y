@@ -15,6 +15,7 @@
 #define YYSTYPE TreeNode *
 static char * savedName; /* for use in assignments */
 static int savedNum;
+static int savedType;
 static int savedLineNo;  /* ditto */
 static TreeNode * savedTree; /* stores syntax tree for later return */
 static int yylex(void);
@@ -72,23 +73,23 @@ var_decl    : type_spcf term_ID SEMI
                     /* should make new node for decl */
                     $$ = newDeclNode(VarK);
                     $$->lineno = lineno;
-                    $$->type = $1; // type_spcf
+                    $$->type = savedType;
                     $$->attr.name = savedName;
                   }
             | type_spcf term_ID LSQUARE term_NUM RSQUARE SEMI
                   {
                     $$ = newDeclNode(ArrayK);
                     $$->lineno = lineno;
-                    $$->type = $1; // type_spcf
+                    $$->type = savedType;
                     $$->attr.arr.id = savedName;
                     $$->attr.arr.size = savedNum;
                   }
             ;
 
 type_spcf   : INT
-                  { $$->type = Integer; }
+                  { savedType = Integer; }
             | VOID
-                  { $$->type = Void; }
+                  { savedType = Void; }
             ;
 
 
