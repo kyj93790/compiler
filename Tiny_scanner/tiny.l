@@ -83,6 +83,7 @@ TokenType getToken(void)
   strncpy(tokenString,yytext,MAXTOKENLEN);
   if (TraceScan) {
     fprintf(listing,"\t%d",lineno);
+    fprintf(listing,"\t\t\t");
     printToken(currentToken,tokenString);
   }
   TraceScan = FALSE;
