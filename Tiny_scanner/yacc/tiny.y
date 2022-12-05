@@ -325,7 +325,7 @@ addop         : PLUS
 
 term          : term mulop factor
                         {
-                          $$ = newExpNode(termK);
+                          $$ = newExpNode(MulK);
                           $$->child[0] = $1;
                           $$->child[1] = $2;
                           $$->child[2] = $3;
