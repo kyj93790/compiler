@@ -16,7 +16,6 @@
 static char * savedName; /* for use in assignments */
 static int savedNum;
 static int savedType;
-static int savedOp;
 static int savedLineNo;  /* ditto */
 static TreeNode * savedTree; /* stores syntax tree for later return */
 static int yylex(void);
@@ -260,51 +259,91 @@ var           : term_ID
 
 simp_exp      : add_exp relop add_exp
                       {
-                        $$ = newExpNode(OpK);
-                        $$->attr.op = savedOp;
+                        $$ = newExpNode(SimpK);
                         $$->child[0] = $1;
-                        $$->child[1] = $3;
+                        $$->child[1] = $2;
+                        $$->child[2] = $3;
                       }
               | add_exp
                       { $$ = $1; }
               ;
 
-relop         : LE  { savedOp = LE; }
-              | LT  { savedOp = LT; }
-              | GT  { savedOp = GT; }
-              | GE  { savedOp = GE; }
-              | EQ  { savedOp = EQ; }
-              | NEQ { savedOp = NEQ; }
+relop         : LE
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = LE;
+                      }
+              | LT 
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = LT;
+                      }
+              | GT
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = GT;
+                      }
+              | GE
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = GE;
+                      }
+              | EQ
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = EQ;
+                      }
+              | NEQ
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = NEQ;
+                      }
               ;
 
 add_exp       : add_exp addop term
                         {
-                          $$ = newExpNode(OpK);
-                          $$->attr.op = savedOp;
+                          $$ = newExpNode(AddK);
                           $$->child[0] = $1;
-                          $$->child[1] = $3;
+                          $$->child[1] = $2;
+                          $$->child[2] = $3;
                         }
               | term
                         { $$ = $1; }
               ;
 
-addop         : PLUS  { savedOp = PLUS; }
-              | MINUS { savedOp = MINUS; }
+addop         : PLUS
+                        {
+                          $$ = newExpNode(OpK);
+                          $$->attr.op = PLUS;
+                        }
+              | MINUS
+                        {
+                          $$ = newExpNode(OpK);
+                          $$->attr.op = MINUS;
+                        }
               ;
 
 term          : term mulop factor
                         {
-                          $$ = newExpNode(OpK);
-                          $$->attr.op = savedOp;
+                          $$ = newExpNode(termK);
                           $$->child[0] = $1;
-                          $$->child[1] = $3;
+                          $$->child[1] = $2;
+                          $$->child[2] = $3;
                         }
               | factor
                         { $$ = $1; }
               ;
 
-mulop         : TIMES { $$ = $1; }
-              | OVER  { $$ = $1; }
+mulop         : TIMES
+                        {
+                          $$ = newExpNode(OpK);
+                          $$->attr.op = TIMES;
+                        }
+              | OVER
+                        {
+                          $$ = newExpNode(OpK);
+                          $$->attr.op = OVER;
+                        }
               ;
 
 factor        : LPAREN exp RPAREN
