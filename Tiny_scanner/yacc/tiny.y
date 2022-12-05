@@ -27,9 +27,56 @@ static int yylex(void);
 
 %% /* Grammar for TINY */
 
-program     : stmt_seq
+program     : decl_lst
                  { savedTree = $1;} 
             ;
+
+decl_lst    : decl_lst decl
+                  {
+                    /* Preprocessor symbol that defines the value type of the parsing stack */
+                    /* recursive */
+                    YYSTYPE t = $1;
+                    if (t != NULL)
+                    { while (t->sibling != NULL)
+                        t = t->sibling;
+                      t->sibling = $2; // decl
+                    }
+                    $$ = $1;
+                  }
+            | decl
+                  { $$ = $1; }
+            ;
+
+decl        : var_decl
+                  { $$ = $1; }
+            | func_decl
+                  { $$ = $1; }
+            ;
+
+
+term_ID     : ID
+                  {
+                    /* embedded action */
+                    /* have to be done before recognition for another token happens */
+                    savedName = copyString(tokenString);
+                    savedLineNo = lineno;
+                  }
+
+term_NUM    : NUM
+                  {
+                    savedName = copyString(tokenString);
+                    savedLineNo = lineno;
+                  }
+
+var_decl    : type_spcf ID SEMI
+                  {
+                    /* should make new node for decl */
+                  }
+            | type_spcf ID LSQUARE NUM RSQUARE SEMI
+                  {
+                    /* should make new node for decl */
+                  }
+
 stmt_seq    : stmt_seq SEMI stmt
                  { YYSTYPE t = $1;
                    if (t != NULL)
