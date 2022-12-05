@@ -15,7 +15,6 @@
 #define YYSTYPE TreeNode *
 static char * savedName; /* for use in assignments */
 static int savedNum;
-static int savedType;
 static int savedLineNo;  /* ditto */
 static TreeNode * savedTree; /* stores syntax tree for later return */
 static int yylex(void);
@@ -73,35 +72,43 @@ var_decl    : type_spcf term_ID SEMI
                     /* should make new node for decl */
                     $$ = newDeclNode(VarK);
                     $$->lineno = lineno;
-                    $$->type = savedType;
+                    $$->child[0] = $1;
                     $$->attr.name = savedName;
                   }
             | type_spcf term_ID LSQUARE term_NUM RSQUARE SEMI
                   {
                     $$ = newDeclNode(ArrayK);
                     $$->lineno = lineno;
-                    $$->type = savedType;
+                    $$->child[0] = $1;
                     $$->attr.arr.id = savedName;
                     $$->attr.arr.size = savedNum;
                   }
             ;
 
-type_spcf   : INT   { savedType = Integer; }
-            | VOID  { savedType = Void; }
+type_spcf   : INT 
+                  {
+                    $$ = newTypeNode(TypeK);
+                    $$->attr.type = INT;
+                  }
+            | VOID 
+                  {
+                    $$ = newTypeNode(TypeK);
+                    $$->attr.type = VOID;
+                  }
             ;
 
 func_decl   : type_spcf term_ID
                   {
                     $$ = newDeclNode(FuncK);
                     $$->lineno = lineno;
-                    $$->type = savedType;
                     $$->attr.name = savedName;
                   }
               LPAREN params RPAREN comp_stmt
                   {
                     $$ = $3;
-                    $$->child[0] = $5; // params
-                    $$->child[1] = $7; // comp_stmt
+                    $$->child[0] = $1;
+                    $$->child[1] = $5; // params
+                    $$->child[2] = $7; // comp_stmt
                   }
             ;
 
@@ -131,13 +138,13 @@ param_lst   : param_lst COMMA param_lst
 param       : type_spcf term_ID
                   {
                     $$ = newParamNode(VarParamK);
-                    $$->type = savedType;
+                    $$->child[0] = $1;
                     $$->attr.name = savedName;
                   }
             | type_spcf term_ID LSQUARE RSQUARE
                   {
                     $$ = newParamNode(ArrParamK);
-                    $$->type = savedType;
+                    $$->child[0] = $1;
                     $$->attr.name = savedName;
                   }
 
