@@ -221,13 +221,13 @@ void printTree( TreeNode * tree )
           printToken(tree->attr.op,"\0");
           break;
         case NumK:
-          fprintf(listing,"Const: %d\n",tree->attr.val);
+          fprintf(listing,"Constant : %d\n",tree->attr.val);
           break;
         case ExpVarK:
           fprintf(listing,"Variable : %s\n", tree->attr.name);
           break;
         case ExpArrK:
-          fprintf(listing,"Array Variable (Name, index): (%s, %d)\n", tree->attr.arr.id, tree->attr.arr.size);
+          fprintf(listing,"Array Variable : %s\n", tree->attr.arr.id);
           break;
         case CallK:
           fprintf(listing, "Call\n");
