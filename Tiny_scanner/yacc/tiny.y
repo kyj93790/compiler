@@ -107,7 +107,41 @@ func_decl   : type_spcf term_ID
                   }
             ;
 
+params      : param_lst
+                  { $$ = $1; }
+            | VOID
+                  { $$ = NULL; }
+            ;
 
+param_lst   : param_lst COMMA param_lst
+                  {
+                    YYSTYPE t = $1;
+                    if (t != NULL) {
+                      while (t->sibling) {
+                        t = t->sibling;
+                      }
+                      t->sibling = $3;
+                      $$ = $1;
+                    }
+                    else {
+                      $$ = $3;
+                    }
+                  }
+            | param
+                  { $$ = $1; }
+
+param       : type_spcf term_ID
+                  {
+                    $$ = newParamNode(VarParamK);
+                    $$->type = savedType;
+                    $$->attr.name = savedName;
+                  }
+            | type_spcf term_ID LSQUARE RSQUARE
+                  {
+                    $$ = newParamNode(ArrParamK);
+                    $$->type = savedType;
+                    $$->attr.name = savedName;
+                  }
 
 %%
 

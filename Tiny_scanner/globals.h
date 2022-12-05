@@ -63,7 +63,7 @@ extern int lineno; /* source line number for listing */
 /**************************************************/
 
 // NodeKind : have to make node
-typedef enum {StmtK, ExpK, DeclK} NodeKind;
+typedef enum {StmtK, ExpK, DeclK, ParamK} NodeKind;
 
 // Attribute for StmtK
 typedef enum {IfK, RepeatK,AssignK,ReadK,WriteK} StmtKind;
@@ -73,6 +73,8 @@ typedef enum {OpK,ConstK,IdK} ExpKind;
 
 // Attribute for DeclK
 typedef enum {VarK, ArrayK, FuncK} DeclKind;
+
+typedef enum {VarParamK, ArrParamK} ParamKind;
 
 /* ExpType is used for type checking */
 typedef enum {Void, Integer} ExpType;
@@ -90,7 +92,7 @@ typedef struct treeNode
      struct treeNode * sibling;
      int lineno;
      NodeKind nodekind;
-     union { StmtKind stmt; ExpKind exp; DeclKind decl; } kind;
+     union { StmtKind stmt; ExpKind exp; DeclKind decl; ParamKind param; } kind;
      union { TokenType op; // case exp
              int val;
              char * name;
