@@ -15,6 +15,8 @@
 #define YYSTYPE TreeNode *
 static char * savedName; /* for use in assignments */
 static int savedNum;
+static int savedType;
+static int savedOp;
 static int savedLineNo;  /* ditto */
 static TreeNode * savedTree; /* stores syntax tree for later return */
 static int yylex(void);
@@ -72,21 +74,21 @@ var_decl    : type_spcf term_ID SEMI
                     /* should make new node for decl */
                     $$ = newDeclNode(VarK);
                     $$->lineno = lineno;
-                    $$->type = $1;
+                    $$->type = savedType;
                     $$->attr.name = savedName;
                   }
             | type_spcf term_ID LSQUARE term_NUM RSQUARE SEMI
                   {
                     $$ = newDeclNode(ArrayK);
                     $$->lineno = lineno;
-                    $$->type = $1;
+                    $$->type = savedType;
                     $$->attr.arr.id = savedName;
                     $$->attr.arr.size = savedNum;
                   }
             ;
 
-type_spcf   : INT   { $$ = $1; }
-            | VOID  { $$ = $1; }
+type_spcf   : INT   { savedType = Integer; }
+            | VOID  { savedType = Void; }
             ;
 
 func_decl   : type_spcf term_ID
@@ -259,7 +261,7 @@ var           : term_ID
 simp_exp      : add_exp relop add_exp
                       {
                         $$ = newExpNode(OpK);
-                        $$->attr.op = $2;
+                        $$->attr.op = savedOp;
                         $$->child[0] = $1;
                         $$->child[1] = $3;
                       }
@@ -267,18 +269,18 @@ simp_exp      : add_exp relop add_exp
                       { $$ = $1; }
               ;
 
-relop         : LE  { $$ = $1; }
-              | LT  { $$ = $1; }
-              | GT  { $$ = $1; }
-              | GE  { $$ = $1; }
-              | EQ  { $$ = $1; }
-              | NEQ { $$ = $1; }
+relop         : LE  { savedOp = LE; }
+              | LT  { savedOp = LT; }
+              | GT  { savedOp = GT; }
+              | GE  { savedOp = GE; }
+              | EQ  { savedOp = EQ; }
+              | NEQ { savedOp = NEQ; }
               ;
 
 add_exp       : add_exp addop term
                         {
                           $$ = newExpNode(OpK);
-                          $$->attr.op = $2;
+                          $$->attr.op = savedOp;
                           $$->child[0] = $1;
                           $$->child[1] = $3;
                         }
@@ -286,14 +288,14 @@ add_exp       : add_exp addop term
                         { $$ = $1; }
               ;
 
-addop         : PLUS  { $$ = $1; }
-              | MINUS { $$ = $1; }
+addop         : PLUS  { savedOp = PLUS; }
+              | MINUS { savedOp = MINUS; }
               ;
 
 term          : term mulop factor
                         {
                           $$ = newExpNode(OpK);
-                          $$->attr.op = $2;
+                          $$->attr.op = savedOp;
                           $$->child[0] = $1;
                           $$->child[1] = $3;
                         }
