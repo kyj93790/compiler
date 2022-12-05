@@ -198,6 +198,44 @@ stmt          : exp_stmt
                       { $$ = $1; }
               ;
 
+exp_stmt      : exp SEMI
+                      { $$ = $1; }
+              | SEMI
+                      { $$ = NULL; }
+              ;
+
+sel_stmt      : IF LPAREN exp RPAREN stmt
+                      {
+                        $$ = newStmtNode(IfK);
+                        $$->child[0] = $3;
+                        $$->child[1] = $5;
+                      }
+              | IF LPAREN exp RPAREN stmt ELSE stmt
+                      {
+                        $$ = newStmtNode(IfK);
+                        $$->child[0] = $3;
+                        $$->child[1] = $5;
+                        $$->child[2] = $7;
+                      }
+              ;
+
+iter_stmt     : WHILE LPAREN exp RPAREN stmt
+                      {
+                        $$ = newStmtNode(IterK);
+                        $$->child[0] = $3;
+                        $$->child[1] = $5;
+                      }
+              ;
+
+ret_stmt      : RETURN SEMI
+                      { $$ = newStmtNode(RetK); }
+              | RETURN exp SEMI
+                      {
+                        $$ = newStmtNode(RetK);
+                        $$->child[0] = $2;
+                      }
+              ;
+
 %%
 
 int yyerror(char * message)

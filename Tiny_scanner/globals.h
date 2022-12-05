@@ -66,7 +66,7 @@ extern int lineno; /* source line number for listing */
 typedef enum {StmtK, ExpK, DeclK, ParamK} NodeKind;
 
 // Attribute for StmtK
-typedef enum {IfK, CompK, RepeatK,AssignK,ReadK,WriteK} StmtKind;
+typedef enum {IfK, CompK, IterK, RetK, AssignK,ReadK,WriteK} StmtKind;
 
 // Attribute for ExpK
 typedef enum {OpK,ConstK,IdK} ExpKind;
