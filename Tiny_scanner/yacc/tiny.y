@@ -93,7 +93,7 @@ type_spcf   : INT   { savedType = Integer; }
 
 func_decl   : type_spcf term_ID
                   {
-                    $$ = newDeclNoode(FuncK);
+                    $$ = newDeclNode(FuncK);
                     $$->lineno = lineno;
                     $$->type = savedType;
                     $$->attr.name = savedName;
