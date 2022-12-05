@@ -67,7 +67,7 @@ term_NUM    : NUM
                   { savedNum = atoi(tokenString); }
             ;
 
-var_decl    : type_spcf ID SEMI
+var_decl    : type_spcf term_ID SEMI
                   {
                     /* should make new node for decl */
                     $$ = newDeclNode(VarK);
@@ -75,7 +75,7 @@ var_decl    : type_spcf ID SEMI
                     $$->type = $1; // type_spcf
                     $$->attr.name = savedName;
                   }
-            | type_spcf ID LSQUARE NUM RSQUARE SEMI
+            | type_spcf term_ID LSQUARE term_NUM RSQUARE SEMI
                   {
                     $$ = newDeclNode(ArrayK);
                     $$->lineno = lineno;
