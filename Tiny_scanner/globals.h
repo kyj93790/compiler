@@ -75,13 +75,12 @@ typedef enum {OpK,ConstK,IdK} ExpKind;
 typedef enum {VarK, ArrayK, FuncK} DeclKind;
 
 /* ExpType is used for type checking */
-typedef enum {Void, Integer, Boolean} ExpType;
+typedef enum {Void, Integer} ExpType;
 
 #define MAXCHILDREN 3
 
 typedef struct Array
 {
-  TokenType type; // type of array
   char *id;       // id of array
   int size;       // size of array
 } Array;
@@ -91,7 +90,7 @@ typedef struct treeNode
      struct treeNode * sibling;
      int lineno;
      NodeKind nodekind;
-     union { StmtKind stmt; ExpKind exp;} kind;
+     union { StmtKind stmt; ExpKind exp; DeclKind decl; } kind;
      union { TokenType op; // case exp
              int val;
              char * name;
