@@ -15,8 +15,6 @@
 #define YYSTYPE TreeNode *
 static char * savedName; /* for use in assignments */
 static int savedNum;
-static int savedType;
-static int savedOp;
 static int savedLineNo;  /* ditto */
 static TreeNode * savedTree; /* stores syntax tree for later return */
 static int yylex(void);
@@ -74,35 +72,43 @@ var_decl    : type_spcf term_ID SEMI
                     /* should make new node for decl */
                     $$ = newDeclNode(VarK);
                     $$->lineno = lineno;
-                    $$->type = savedType;
+                    $$->child[0] = $1;
                     $$->attr.name = savedName;
                   }
             | type_spcf term_ID LSQUARE term_NUM RSQUARE SEMI
                   {
                     $$ = newDeclNode(ArrayK);
                     $$->lineno = lineno;
-                    $$->type = savedType;
+                    $$->child[0] = $1;
                     $$->attr.arr.id = savedName;
                     $$->attr.arr.size = savedNum;
                   }
             ;
 
-type_spcf   : INT   { savedType = Integer; }
-            | VOID  { savedType = Void; }
+type_spcf   : INT 
+                  {
+                    $$ = newTypeNode(TypeK);
+                    $$->attr.type = INT;
+                  }
+            | VOID 
+                  {
+                    $$ = newTypeNode(TypeK);
+                    $$->attr.type = VOID;
+                  }
             ;
 
 func_decl   : type_spcf term_ID
                   {
                     $$ = newDeclNode(FuncK);
                     $$->lineno = lineno;
-                    $$->type = savedType;
                     $$->attr.name = savedName;
                   }
               LPAREN params RPAREN comp_stmt
                   {
                     $$ = $3;
-                    $$->child[0] = $5; // params
-                    $$->child[1] = $7; // comp_stmt
+                    $$->child[0] = $1;
+                    $$->child[1] = $5; // params
+                    $$->child[2] = $7; // comp_stmt
                   }
             ;
 
@@ -132,13 +138,13 @@ param_lst   : param_lst COMMA param_lst
 param       : type_spcf term_ID
                   {
                     $$ = newParamNode(VarParamK);
-                    $$->type = savedType;
+                    $$->child[0] = $1;
                     $$->attr.name = savedName;
                   }
             | type_spcf term_ID LSQUARE RSQUARE
                   {
                     $$ = newParamNode(ArrParamK);
-                    $$->type = savedType;
+                    $$->child[0] = $1;
                     $$->attr.name = savedName;
                   }
 
@@ -239,7 +245,7 @@ exp           : var ASSIGN exp
                       {
                         $$ = newExpNode(AssignK);
                         $$->child[0] = $1;
-                        $$->child[1] = $2;
+                        $$->child[1] = $3;
                       }
               | simp_exp
                       { $$ = $1; }
@@ -254,57 +260,97 @@ var           : term_ID
                       {
                         $$ = newExpNode(ExpArrK);
                         $$->attr.name = savedName;
-                        $$->child[0] = $4;
+                        $$->child[0] = $3;
                       }
               ;
 
 simp_exp      : add_exp relop add_exp
                       {
-                        $$ = newExpNode(OpK);
-                        $$->attr.op = savedOp;
+                        $$ = newExpNode(SimpK);
                         $$->child[0] = $1;
-                        $$->child[1] = $3;
+                        $$->child[1] = $2;
+                        $$->child[2] = $3;
                       }
               | add_exp
                       { $$ = $1; }
               ;
 
-relop         : LE  { savedOp = LE; }
-              | LT  { savedOp = LT; }
-              | GT  { savedOp = GT; }
-              | GE  { savedOp = GE; }
-              | EQ  { savedOp = EQ; }
-              | NEQ { savedOp = NEQ; }
+relop         : LE
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = LE;
+                      }
+              | LT 
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = LT;
+                      }
+              | GT
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = GT;
+                      }
+              | GE
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = GE;
+                      }
+              | EQ
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = EQ;
+                      }
+              | NEQ
+                      {
+                        $$ = newExpNode(OpK);
+                        $$->attr.op = NEQ;
+                      }
               ;
 
 add_exp       : add_exp addop term
                         {
-                          $$ = newExpNode(OpK);
-                          $$->attr.op = savedOp;
+                          $$ = newExpNode(AddK);
                           $$->child[0] = $1;
-                          $$->child[1] = $3;
+                          $$->child[1] = $2;
+                          $$->child[2] = $3;
                         }
               | term
                         { $$ = $1; }
               ;
 
-addop         : PLUS  { savedOp = PLUS; }
-              | MINUS { savedOp = MINUS; }
+addop         : PLUS
+                        {
+                          $$ = newExpNode(OpK);
+                          $$->attr.op = PLUS;
+                        }
+              | MINUS
+                        {
+                          $$ = newExpNode(OpK);
+                          $$->attr.op = MINUS;
+                        }
               ;
 
 term          : term mulop factor
                         {
-                          $$ = newExpNode(OpK);
-                          $$->attr.op = savedOp;
+                          $$ = newExpNode(MulK);
                           $$->child[0] = $1;
-                          $$->child[1] = $3;
+                          $$->child[1] = $2;
+                          $$->child[2] = $3;
                         }
               | factor
                         { $$ = $1; }
               ;
 
-mulop         : TIMES { $$ = $1; }
-              | OVER  { $$ = $1; }
+mulop         : TIMES
+                        {
+                          $$ = newExpNode(OpK);
+                          $$->attr.op = TIMES;
+                        }
+              | OVER
+                        {
+                          $$ = newExpNode(OpK);
+                          $$->attr.op = OVER;
+                        }
               ;
 
 factor        : LPAREN exp RPAREN
