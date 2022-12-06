@@ -16,5 +16,5 @@ clean :
 	rm -f *.o
 	rm -f lex.yy.*
 	rm -f y.tab.*
-	rm -f *_20191574.txt
+	rm -f */*_20191574.txt
 	rm -f $(TARGET)
