@@ -1,0 +1,17 @@
+
+TINY COMPILATION: test0.c
+
+Syntax tree:
+    Variable Declare : a
+        Type : int
+    Function Declare : main
+        Type : void
+        Parameter : arg
+            Type : int
+        Compound Statement
+            Assign : =
+                Variable : a
+                Additive Expression
+                    Variable : a
+                    Operator : +
+                    Constant : 1
