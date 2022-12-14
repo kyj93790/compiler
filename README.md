@@ -16,7 +16,7 @@
 Result of Tests
 
 ### Test 1)
-
+#### Given test case
 ```
 int a;
 
@@ -43,6 +43,7 @@ Syntax tree:
 ```
 
 ### Test 2)
+#### Array declaration, assignment, expression
 
 ```
 int a;
@@ -87,7 +88,7 @@ Syntax tree:
 ```
 
 ### Test 3)
-
+#### Given test case
 ```
 void main(void)
 {
@@ -156,6 +157,7 @@ Syntax tree:
 
 
 ### Test 4)
+#### Given test case
 
 ```
 void main(void)
@@ -175,6 +177,7 @@ Syntax tree:
 ```
 
 ### Test 5)
+#### Multi arguments
 
 ```
 void main(int a, int b)
@@ -238,6 +241,7 @@ Syntax tree:
 ```
 
 ### Test 6)
+#### Multi else
 
 ```
 void main(int a, int b)
@@ -306,6 +310,7 @@ Syntax tree:
 ```
 
 ### Test 7)
+#### Declaration with assignment
 
 ```
 void main(int a, int b)
@@ -331,4 +336,246 @@ Syntax error at line 3: syntax error
 Current token: =			=
 
 Syntax tree:
+```
+
+### Test 8)
+#### Function call
+
+```
+int a;
+
+void func(int x){
+	int test;
+}
+
+void main(int arg){
+	a = a + 1;
+	func(a);
+}
+```
+
+```
+Syntax tree:
+    Variable Declare : a
+        Type : int
+    Function Declare : func
+        Type : void
+        Parameter : x
+            Type : int
+        Compound Statement
+            Variable Declare : test
+                Type : int
+    Function Declare : main
+        Type : void
+        Parameter : arg
+            Type : int
+        Compound Statement
+            Assign : =
+                Variable : a
+                Additive Expression
+                    Variable : a
+                    Operator : +			
+                    Constant : 1
+            Call
+                Variable : a
+
+```
+
+### Test 9)
+#### Function call argument with expression
+
+```
+int a;
+
+void func(int x){
+	int test;
+}
+
+void main(int arg){
+	a = a + 1;
+	func(a + 3);
+}
+```
+
+```
+Syntax tree:
+    Variable Declare : a
+        Type : int
+    Function Declare : func
+        Type : void
+        Parameter : x
+            Type : int
+        Compound Statement
+            Variable Declare : test
+                Type : int
+    Function Declare : main
+        Type : void
+        Parameter : arg
+            Type : int
+        Compound Statement
+            Assign : =
+                Variable : a
+                Additive Expression
+                    Variable : a
+                    Operator : +			
+                    Constant : 1
+            Call
+                Additive Expression
+                    Variable : a
+                    Operator : +			
+                    Constant : 3
+
+```
+
+### Test 10)
+#### Function call with assignment
+
+```
+int a;
+
+void func(int x){
+	int test;
+}
+
+void main(int arg){
+	a = a + 1;
+	func(a = 3);
+}
+```
+
+```
+Syntax tree:
+    Variable Declare : a
+        Type : int
+    Function Declare : func
+        Type : void
+        Parameter : x
+            Type : int
+        Compound Statement
+            Variable Declare : test
+                Type : int
+    Function Declare : main
+        Type : void
+        Parameter : arg
+            Type : int
+        Compound Statement
+            Assign : =
+                Variable : a
+                Additive Expression
+                    Variable : a
+                    Operator : +			
+                    Constant : 1
+            Call
+                Assign : =
+                    Variable : a
+                    Constant : 3
+
+```
+
+### Test 11)
+#### Iteration(while)
+
+```
+int a;
+
+void func(int x){
+	int test;
+}
+
+void main(int arg){
+	a = 1;
+	while (a < 5) {
+		a = a + 1;
+	}
+	return ;
+}
+```
+
+```
+Syntax tree:
+    Variable Declare : a
+        Type : int
+    Function Declare : func
+        Type : void
+        Parameter : x
+            Type : int
+        Compound Statement
+            Variable Declare : test
+                Type : int
+    Function Declare : main
+        Type : void
+        Parameter : arg
+            Type : int
+        Compound Statement
+            Assign : =
+                Variable : a
+                Constant : 1
+            Iteration Statement
+                Simple Expression
+                    Variable : a
+                    Operator : <			
+                    Constant : 5
+                Compound Statement
+                    Assign : =
+                        Variable : a
+                        Additive Expression
+                            Variable : a
+                            Operator : +			
+                            Constant : 1
+            Return Statement
+```
+
+### Test 12)
+#### Return value
+
+```
+int a;
+
+void func(int x){
+	int test;
+}
+
+int main(int arg){
+	a = 1;
+	while (a < 5) {
+		a = a + 1;
+	}
+	return 0;
+}
+```
+
+```
+Syntax tree:
+    Variable Declare : a
+        Type : int
+    Function Declare : func
+        Type : void
+        Parameter : x
+            Type : int
+        Compound Statement
+            Variable Declare : test
+                Type : int
+    Function Declare : main
+        Type : int
+        Parameter : arg
+            Type : int
+        Compound Statement
+            Assign : =
+                Variable : a
+                Constant : 1
+            Iteration Statement
+                Simple Expression
+                    Variable : a
+                    Operator : <			
+                    Constant : 5
+                Compound Statement
+                    Assign : =
+                        Variable : a
+                        Additive Expression
+                            Variable : a
+                            Operator : +			
+                            Constant : 1
+            Return Statement
+                Constant : 0
+
 ```
