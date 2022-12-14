@@ -428,7 +428,7 @@ Syntax tree:
 ```
 
 ### Test 10)
-#### Function call with assignment
+#### Function call argument with assignment
 
 ```
 int a;
