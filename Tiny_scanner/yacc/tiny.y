@@ -256,11 +256,15 @@ var           : term_ID
                         $$ = newExpNode(ExpVarK);
                         $$->attr.name = savedName;
                       }
-              | term_ID LSQUARE exp RSQUARE
+              | term_ID
                       {
                         $$ = newExpNode(ExpArrK);
                         $$->attr.name = savedName;
-                        $$->child[0] = $3;
+                      }
+                LSQUARE exp RSQUARE
+                      {
+                        $$ = $2;
+                        $$->child[0] = $4;
                       }
               ;
 
@@ -374,7 +378,7 @@ call          : term_ID
                 LPAREN args RPAREN
                       {
                         $$ = $2;
-                        $$->child[0] = $;
+                        $$->child[0] = $4;
                       }
               ;
 
