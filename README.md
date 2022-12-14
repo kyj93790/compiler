@@ -112,10 +112,6 @@ void main(void)
 Syntax tree:
     Function Declare : main
         Type : void
-        Parameter : argone
-            Type : int
-        Parameter : argtwo
-            Type : int
         Compound Statement
             Variable Declare : a
                 Type : int
@@ -153,6 +149,7 @@ Syntax tree:
                             Assign : =
                                 Variable : e
                                 Constant : 4
+
 ```
 
 
@@ -376,9 +373,8 @@ Syntax tree:
                     Variable : a
                     Operator : +			
                     Constant : 1
-            Call
+            Call : func
                 Variable : a
-
 ```
 
 ### Test 9)
@@ -419,7 +415,7 @@ Syntax tree:
                     Variable : a
                     Operator : +			
                     Constant : 1
-            Call
+            Call : func
                 Additive Expression
                     Variable : a
                     Operator : +			
@@ -465,11 +461,10 @@ Syntax tree:
                     Variable : a
                     Operator : +			
                     Constant : 1
-            Call
+            Call : func
                 Assign : =
                     Variable : a
                     Constant : 3
-
 ```
 
 ### Test 11)
@@ -523,6 +518,7 @@ Syntax tree:
                             Operator : +			
                             Constant : 1
             Return Statement
+
 ```
 
 ### Test 12)
@@ -577,5 +573,4 @@ Syntax tree:
                             Constant : 1
             Return Statement
                 Constant : 0
-
 ```
