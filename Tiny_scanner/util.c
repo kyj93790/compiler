@@ -230,7 +230,7 @@ void printTree( TreeNode * tree )
           fprintf(listing,"Array Variable : %s\n", tree->attr.arr.id);
           break;
         case CallK:
-          fprintf(listing, "Call\n");
+          fprintf(listing, "Call : %s\n", tree->attr.name);
           break;
         default:
           fprintf(listing,"Unknown ExpNode kind\n");

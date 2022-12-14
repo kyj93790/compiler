@@ -366,11 +366,15 @@ factor        : LPAREN exp RPAREN
                       }
               ;
 
-call          : term_ID LPAREN args RPAREN
+call          : term_ID
                       {
                         $$ = newExpNode(CallK);
                         $$->attr.name = savedName;
-                        $$->child[0] = $3;
+                      }
+                LPAREN args RPAREN
+                      {
+                        $$ = $2;
+                        $$->child[0] = $;
                       }
               ;
 
