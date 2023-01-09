@@ -13,7 +13,15 @@
 - [x] should be able to handle syntatic errors correctly
 
 
-Result of Tests
+---
+## For the execution
+1. Clone this project
+2. Go into the directory "Tiny_scanner"
+3. make (Then you will get an execution file "hw2_binary"
+4. execute like this way : ./hw2_binary [path of the test file]
+5. You will get the output file named "[path of the test file]_20191574.txt"
+
+## Result of Tests
 
 ### Test 1)
 #### Given test case
