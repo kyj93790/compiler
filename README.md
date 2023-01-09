@@ -14,7 +14,7 @@
 
 
 ---
-## For the execution
+## For execution
 1. Clone this project
 2. Go into the directory "Tiny_scanner"
 3. make (Then you will get an execution file "hw2_binary"
